@@ -2,6 +2,7 @@ package com.hiyouka.sources;
 
 import com.hiyouka.sources.config.MainConfig;
 import com.hiyouka.sources.demo.AnnoDemo;
+import com.hiyouka.sources.util.ClassUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,11 @@ public class TestMain {
 
         ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
         String[] testBeanPostProcessors = beanFactory.getAliases("classUtils");
-        System.out.println("bean Aliases is : " + Arrays.asList(testBeanPostProcessors));
-        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-        System.out.println("bean definition is : " + Arrays.asList(beanDefinitionNames));
+//        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
+        ClassUtils bean = applicationContext.getBean(ClassUtils.class);
+//        System.out.println("bean Aliases is : " + Arrays.asList(testBeanPostProcessors));
+//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+//        System.out.println("bean definition is : " + Arrays.asList(beanDefinitionNames));
         applicationContext.close();
     }
 

@@ -6,22 +6,25 @@ import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+import javax.annotation.Priority;
+
 /**
  * @author hiyouka
  * Date: 2019/1/30
  * @since JDK 1.8
  */
+
 public class OnBean extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
-
-        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
-        if(bean == null){
-            return ConditionOutcome.match("ok");
-        }else {
+        Assert.notEmpty(new Object[]{beanFactory},"beanFactory is null......");
+        String[] beanNames = beanFactory.getBeanNamesForType(ClassUtils.class);
+        if(beanNames.length > 0){
             return ConditionOutcome.noMatch("already exist this type bean");
+        }else {
+            return ConditionOutcome.match("ok");
         }
     }
 }
