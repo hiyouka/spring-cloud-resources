@@ -1,10 +1,6 @@
 package com.hiyouka.sources.config;
 
-import com.hiyouka.sources.util.ClassUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 /**
  * @author hiyouka
@@ -19,11 +15,11 @@ public class BeanConfig {
 //        return new TestBeanDefinitionRegistryPostProcessor();
 //    }
 
-    @Bean
-    @Qualifier
-    @Primary
-    public ClassUtils classUtils(){
-        return new ClassUtils();
-    }
+//    @Bean
+//    @Qualifier
+//    @Primary
+//    public ClassUtils classUtils(){
+//        return new ClassUtils();
+//    }
 
 }

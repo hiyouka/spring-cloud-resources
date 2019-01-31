@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 //@ComponentScan({"com.hiyouka.sources.config"})
 //@PropertySource({"classpath:/datasource.properties"})
 //@EnableTransactionManagement
-@ComponentScan({"com.hiyouka.sources.config"})
+@ComponentScan({"com.hiyouka.sources.config","com.hiyouka.sources.util"})
 public class MainConfig {
 
 }

@@ -3,6 +3,7 @@ package com.hiyouka.sources.util;
 import com.hiyouka.sources.config.TestBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  * @since JDK 1.8
  */
 @Component
+@Conditional({OnBean.class})
 public class ClassUtils extends SupClassU{
 
     @Autowired
