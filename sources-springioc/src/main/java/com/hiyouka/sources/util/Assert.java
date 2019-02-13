@@ -14,4 +14,10 @@ public class Assert {
         }
     }
 
+
+    public static void notEmpty( Object item, String message) {
+        if (ObjectUtils.isEmpty(item)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

@@ -7,7 +7,7 @@ package com.hiyouka.sources.util;
  */
 public class ObjectUtils {
 
-    public static boolean isEmpty(Object[] array) {
+    public static boolean isEmpty(Object... array) {
         return (array == null || array.length == 0);
     }
 

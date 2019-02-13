@@ -42,6 +42,8 @@ public class TestMain {
 
     @Test
     public void anTest(){
+
+
 //        Class<Service> serviceClass = Service.class;
         AnnotatedElement  mainConfigClass = AnnoDemo.class;
         Annotation[] declaredAnnotations = mainConfigClass.getDeclaredAnnotations();

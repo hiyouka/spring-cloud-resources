@@ -7,12 +7,13 @@
 ```php
     
     //if not allow cache all bean or allowEagerInit ? 这个条件看不懂
+    //isConfigurationFrozen if is true mean this context init finish
     //get bean name from beanDefinitionNames and manualSingletonNames
 	if (!isConfigurationFrozen() || type == null || !allowEagerInit) {
 		return doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, allowEagerInit);
 	}
-	// if allow cache all bean get bean name from cache first
-	Map<Class<?>, String[]> cache =
+	// if allow cache all bean get bean name from cache first(isConigurationFrozen is true)
+	Map<Class<?>, String[]> cache = // includeNonSingletons : 是否包含非单例对象
 			(includeNonSingletons ? this.allBeanNamesByType : this.singletonBeanNamesByType);
 	String[] resolvedBeanNames = cache.get(type);
 	if (resolvedBeanNames != null) {

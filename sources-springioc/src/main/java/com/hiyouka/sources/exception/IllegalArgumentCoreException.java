@@ -5,9 +5,9 @@ package com.hiyouka.sources.exception;
  * Date: 2019/1/28
  * @since JDK 1.8
  */
-public class IllegalArgumentException  extends RuntimeException{
+public class IllegalArgumentCoreException extends SeedCoreException {
 
-    public IllegalArgumentException(String message) {
+    public IllegalArgumentCoreException(String message) {
         super(message);
     }
 

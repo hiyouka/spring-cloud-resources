@@ -5,15 +5,15 @@ package com.hiyouka.sources.exception;
  * Date: 2019/1/27
  * @since JDK 1.8
  */
-public class NoSuchBeanDefinitionException extends RuntimeException {
+public class NoSuchBeanDefinitionCoreException extends SeedCoreException {
 
     private final static String message = "not find BeanDefinition error !!";
 
-    public NoSuchBeanDefinitionException() {
+    public NoSuchBeanDefinitionCoreException() {
         super(message);
     }
 
-    public NoSuchBeanDefinitionException(String message) {
+    public NoSuchBeanDefinitionCoreException(String message) {
         super(message);
     }
 

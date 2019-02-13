@@ -1,8 +1,8 @@
 package com.hiyouka.sources.core.factory;
 
 
-import com.hiyouka.sources.exception.BeansException;
-import com.hiyouka.sources.exception.NoSuchBeanDefinitionException;
+import com.hiyouka.sources.exception.BeansCoreException;
+import com.hiyouka.sources.exception.NoSuchBeanDefinitionCoreException;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -32,14 +32,14 @@ public interface ListableBeanFactory extends BeanFactory {
     String[] getBeanNamesForType(Class<?> type, boolean includeNonSingletons, boolean allowEagerInit);
 
 
-    <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException;
+    <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansCoreException;
 
     String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType);
 
 
-    Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) throws BeansException;
+    Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) throws BeansCoreException;
 
 
-    <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) throws NoSuchBeanDefinitionException;
+    <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) throws NoSuchBeanDefinitionCoreException;
 
 }

@@ -5,15 +5,15 @@ package com.hiyouka.sources.exception;
  * Date: 2019/1/27
  * @since JDK 1.8
  */
-public class BeanDefinitionStoreException extends RuntimeException {
+public class BeanDefinitionStoreCoreException extends SeedCoreException {
 
     private final static String message = "BeanDefinition invalid !!";
 
-    public BeanDefinitionStoreException() {
+    public BeanDefinitionStoreCoreException() {
         super(message);
     }
 
-    public BeanDefinitionStoreException(String message) {
+    public BeanDefinitionStoreCoreException(String message) {
         super(message);
     }
 

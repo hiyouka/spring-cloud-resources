@@ -5,15 +5,15 @@ package com.hiyouka.sources.exception;
  * Date: 2019/1/27
  * @since JDK 1.8
  */
-public class BeansException extends RuntimeException {
+public class BeansCoreException extends SeedCoreException {
 
     private final static String message = "get Bean error !!";
 
-    public BeansException() {
+    public BeansCoreException() {
         super(message);
     }
 
-    public BeansException(String message) {
+    public BeansCoreException(String message) {
         super(message);
     }
 

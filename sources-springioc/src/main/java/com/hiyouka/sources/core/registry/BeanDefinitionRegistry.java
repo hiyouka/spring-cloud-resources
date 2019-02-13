@@ -2,7 +2,7 @@ package com.hiyouka.sources.core.registry;
 
 
 import com.hiyouka.sources.core.beans.definition.BeanDefinition;
-import com.hiyouka.sources.exception.BeanDefinitionStoreException;
+import com.hiyouka.sources.exception.BeanDefinitionStoreCoreException;
 
 /**
  * @author hiyouka
@@ -12,6 +12,6 @@ import com.hiyouka.sources.exception.BeanDefinitionStoreException;
 public interface BeanDefinitionRegistry {
 
     void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
-            throws BeanDefinitionStoreException;
+            throws BeanDefinitionStoreCoreException;
 
 }
