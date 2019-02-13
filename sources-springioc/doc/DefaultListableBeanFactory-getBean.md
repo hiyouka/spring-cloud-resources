@@ -2,7 +2,8 @@
 &emsp;&emsp;&emsp;&emsp;这里讲的是根据类型获取bean因为它之后调用的也是根据名称获取bean，下图可以简单看出这个方法执行的步骤。首先是根据bean类型去解析bean获取nameBeanHolder，如果存在则返回bean的实例。如果没有就从父工厂中获取bean。  
 ![img](http://ww1.sinaimg.cn/large/007BVBG7gy1fzplp6k1tdj30rq07imxd.jpg)
 &emsp;&emsp;&emsp;&emsp; resolveNamedBean方法：
-    该方法先用`getBeanNamesForType`找出所有该类型的bean名称。方法如下:
+    该方法先用`getBeanNamesForType`找出所有该类型的bean名称,大概做的步骤就是先从缓存中获取该类型的bean名称，没有获取到的
+    话就使用`doGetBeanNamesForType`方法继续获取。`getBeanNamesForType`方法如下:
     
 ```php
     
@@ -27,7 +28,7 @@
 	}
 	return resolvedBeanNames;
 ```  
-        
+
 &emsp;&emsp;&emsp;&emsp;接下来我们就来看下`doGetBeanNamesForType`到底做了什么吧：贴上源码  
         
 ```php
@@ -92,9 +93,9 @@
     }
     return StringUtils.toStringArray(result);
 ```
-&emsp;&emsp;&emsp;&emsp; 从源码可以看出他先是从所有的beanDefinintion中查找符合该类型的的单例bean和单例bean工厂对象,
-            之后再从`manualSingletonNames`也就是前文提到的调用无参构造函数是创建的bean中做之前同样的操作。
-             这边要注意一下再返回工厂bean名称时需要加上`&`    
+&emsp;&emsp;&emsp;&emsp; 从源码可以看出他先是从所有的beanDefinition中查找符合该类型的的单例bean和单例bean工厂对象,
+            之后再从`manualSingletonNames`(容器创建时无参构造函数初始化的bean)中获取符合的单例bean和单例bean工厂对象。
+            这边要注意一下再返回工厂bean名称时需要加上`&`    
             
 &emsp;&emsp;&emsp;&emsp; 拿到bean的名称之后判断符合条件的bean名称的个数。  
 &emsp;&emsp;&emsp;&emsp; 如果bean名称多于一个进行以下操作： 判断这些类上面又没有这两个注解:`@Primary`  `@Priority`  
@@ -128,8 +129,10 @@
 	}
 	return singletonObject;
 ```
-&emsp;&emsp;&emsp;&emsp; 该方法试图获取bean对象，如果获取到的是factroyBean那就是用factoryBean创建对象，这里就不讲factroyBean创建对象的过程了。
-获取到bean对象之后，应该是判断这个bean：直接贴源码  
+&emsp;&emsp;&emsp;&emsp; 从源码可以看出`getSingleton`做了以下几件事：1.从单例对象缓存中获取bean 2. 若1未获取到并且该对象正在创建则锁定单例缓存
+                         从早期创建的对象中获取bean(**_$待补全详细$_**) 3.若2依旧未获取到并且允许提前创建早期对象则获取该bean的单例工厂，存在则创建并返回。
+&emsp;&emsp;&emsp;&emsp; 该方法试图获取bean对象，如果获取到的是factoryBean那就是用factoryBean创建对象，这里就不讲factoryBean创建对象的过程了。
+获取到bean对象之后，判断bean类型是否符合，若不符合试图转化 ：直接贴源码  
 ```php
 
 // Check if required type matches the type of the actual bean instance.

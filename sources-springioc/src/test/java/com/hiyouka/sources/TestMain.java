@@ -31,9 +31,9 @@ public class TestMain {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
 
         ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
-        String[] testBeanPostProcessors = beanFactory.getAliases("classUtils");
+        String[] testBeanPostProcessors = beanFactory.getAliases("&classUtils");
 //        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
-        ClassUtils bean = applicationContext.getBean(ClassUtils.class);
+        ClassUtils bean = (ClassUtils) applicationContext.getBean("classUtils");
 //        System.out.println("bean Aliases is : " + Arrays.asList(testBeanPostProcessors));
 //        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 //        System.out.println("bean definition is : " + Arrays.asList(beanDefinitionNames));
