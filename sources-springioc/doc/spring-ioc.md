@@ -187,3 +187,4 @@ if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
 &emsp;&emsp;&emsp;&emsp;***5)*** applyScopedProxyMode方法: 判断是否需要创建代理对象。如果需要调用`ScopedProxyCreator.createScopedProxy`方法创建。(待补全代理对象的创建过程...)  
 
 &emsp;&emsp;&emsp;&emsp;***6)*** registerBeanDefinition方法: 从方法名可以看出这部是真正的注册beanDefinition。真正调用的是容器中的BeanFactory(这里是`DefaultListableBeanFactory`)的`registerBeanDefinition`方法。首先验证beanDefinition的信息(具体我也没看懂在干什么)。之后判断该beanDefinition是否被注册过(若注册过符合条件覆盖之前的beanDefinition)。之后就是第一次注册该bean的操作:和调用无参构造函数注册过程一致<a href="#divtop">详情</a>。
+&emsp;&emsp;&emsp;&emsp;**`register`方法分析到这里就结束了，其实做的事情就是将配置类注册到容器当中。**  
