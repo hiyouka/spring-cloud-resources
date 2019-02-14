@@ -1,5 +1,5 @@
 
- ````
+ ```markdown
     //序列化id映射到工厂实例
 	private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories =
 			new ConcurrentHashMap<>(8);
@@ -241,4 +241,4 @@
 
 	/** Map from alias to canonical name */
 	private final Map<String, String> aliasMap = new ConcurrentHashMap<>(16);
-````
+```

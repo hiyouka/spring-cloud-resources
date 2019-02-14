@@ -33,7 +33,7 @@ public class TestMain {
         ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
         String[] testBeanPostProcessors = beanFactory.getAliases("&classUtils");
 //        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
-        ClassUtils bean = (ClassUtils) applicationContext.getBean("classUtils");
+        ClassUtils bean = applicationContext.getBean(ClassUtils.class);
 //        System.out.println("bean Aliases is : " + Arrays.asList(testBeanPostProcessors));
 //        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 //        System.out.println("bean definition is : " + Arrays.asList(beanDefinitionNames));

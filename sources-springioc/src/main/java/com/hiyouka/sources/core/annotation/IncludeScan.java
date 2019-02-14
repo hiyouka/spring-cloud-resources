@@ -1,4 +1,4 @@
-package com.hiyouka.sources.core.annocation;
+package com.hiyouka.sources.core.annotation;
 
 import java.lang.annotation.*;
 
@@ -10,8 +10,8 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Include {
+public @interface IncludeScan {
 
-    String value() default "";
+    String[] value() default {};
 
 }

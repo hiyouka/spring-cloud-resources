@@ -1,10 +1,11 @@
-package com.hiyouka.sources.core.annocation;
+package com.hiyouka.sources.core.annotation;
 
 import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Primary {
+public @interface Lazy {
     boolean value() default true;
+
 }

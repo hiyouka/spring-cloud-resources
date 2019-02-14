@@ -130,8 +130,125 @@
 	return singletonObject;
 ```
 &emsp;&emsp;&emsp;&emsp; 从源码可以看出`getSingleton`做了以下几件事：1.从单例对象缓存中获取bean 2. 若1未获取到并且该对象正在创建则锁定单例缓存
-                         从早期创建的对象中获取bean(**_$待补全详细$_**) 3.若2依旧未获取到并且允许提前创建早期对象则获取该bean的单例工厂，存在则创建并返回。
-&emsp;&emsp;&emsp;&emsp; 该方法试图获取bean对象，如果获取到的是factoryBean那就是用factoryBean创建对象，这里就不讲factoryBean创建对象的过程了。
+                         从早期创建的对象中获取bean(待补全详细) 3.若2依旧未获取到并且允许提前创建早期对象则获取该bean的单例工厂，存在则创建并返回。
+&emsp;&emsp;&emsp;&emsp; 该方法试图获取bean对象。获取到之后如果不为`null`则调用`getObjectForBeanInstance`来获取真实的实例。
+`getObjectForBeanInstance`方法做了以下事情:1如果之前获取的对象不是FactoryBean或者要获取的是FactoryBean(beanName前缀为`&`)则直接返回bean
+2如果之前获取的对象是FactoryBean并且要获取的是工厂生产的对象则通过FactoryBean获取对象(先从工厂生产对象缓存中获取,非单例对象工厂获取时不会放入缓存中)
+&emsp;&emsp;&emsp;&emsp;如果`getSingleton`获取到的对象为`null`(容器还没有创建对象)则会创建对象:首先判断该对象是否在创建中。之后判断scope使用`doCreateBean`方法创建bean(大致是用反射调用无参构造函数具体看容器初始化)
+```markdown
+
+//fail will if this bean in creation(ThreadLocal<Object> have this bean)
+if (isPrototypeCurrentlyInCreation(beanName)) {
+    throw new BeanCurrentlyInCreationException(beanName);
+}
+// Check if bean definition exists in this factory.
+BeanFactory parentBeanFactory = getParentBeanFactory();
+if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
+    // Not found -> check parent.
+    String nameToLookup = originalBeanName(name);
+    if (parentBeanFactory instanceof AbstractBeanFactory) {
+        return ((AbstractBeanFactory) parentBeanFactory).doGetBean(
+                nameToLookup, requiredType, args, typeCheckOnly);
+    }
+    else if (args != null) {
+        // Delegation to parent with explicit args.
+        return (T) parentBeanFactory.getBean(nameToLookup, args);
+    }
+    else {
+        // No args -> delegate to standard getBean method.
+        return parentBeanFactory.getBean(nameToLookup, requiredType);
+    }
+}
+
+if (!typeCheckOnly) {
+    markBeanAsCreated(beanName);
+}
+
+try {
+    final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+    checkMergedBeanDefinition(mbd, beanName, args);
+
+    // Guarantee initialization of beans that the current bean depends on.
+    String[] dependsOn = mbd.getDependsOn();
+    if (dependsOn != null) {
+        for (String dep : dependsOn) {
+            if (isDependent(beanName, dep)) {
+                throw new BeanCreationException(mbd.getResourceDescription(), beanName,
+                        "Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
+            }
+            registerDependentBean(dep, beanName);
+            try {
+                getBean(dep);
+            }
+            catch (NoSuchBeanDefinitionException ex) {
+                throw new BeanCreationException(mbd.getResourceDescription(), beanName,
+                        "'" + beanName + "' depends on missing bean '" + dep + "'", ex);
+            }
+        }
+    }
+
+    // Create bean instance.
+    if (mbd.isSingleton()) {
+        sharedInstance = getSingleton(beanName, () -> {
+            try {
+                return createBean(beanName, mbd, args);
+            }
+            catch (BeansException ex) {
+                // Explicitly remove instance from singleton cache: It might have been put there
+                // eagerly by the creation process, to allow for circular reference resolution.
+                // Also remove any beans that received a temporary reference to the bean.
+                destroySingleton(beanName);
+                throw ex;
+            }
+        });
+        bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+    }
+
+    else if (mbd.isPrototype()) {
+        // It's a prototype -> create a new instance.
+        Object prototypeInstance = null;
+        try {
+            beforePrototypeCreation(beanName);
+            prototypeInstance = createBean(beanName, mbd, args);
+        }
+        finally {
+            afterPrototypeCreation(beanName);
+        }
+        bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+    }
+
+    else {
+        String scopeName = mbd.getScope();
+        final Scope scope = this.scopes.get(scopeName);
+        if (scope == null) {
+            throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
+        }
+        try {
+            Object scopedInstance = scope.get(beanName, () -> {
+                beforePrototypeCreation(beanName);
+                try {
+                    return createBean(beanName, mbd, args);
+                }
+                finally {
+                    afterPrototypeCreation(beanName);
+                }
+            });
+            bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
+        }
+        catch (IllegalStateException ex) {
+            throw new BeanCreationException(beanName,
+                    "Scope '" + scopeName + "' is not active for the current thread; consider " +
+                    "defining a scoped proxy for this bean if you intend to refer to it from a singleton",
+                    ex);
+        }
+    }
+}
+catch (BeansException ex) {
+    cleanupAfterBeanCreationFailure(beanName);
+    throw ex;
+}
+```
+
 获取到bean对象之后，判断bean类型是否符合，若不符合试图转化 ：直接贴源码  
 ```php
 
@@ -149,3 +266,5 @@ if (requiredType != null && !requiredType.isInstance(bean)) {
 		throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
 	}
 }
+```
+总结:分析源码可以得出以下几点结论: 1.@Primary注解优先级高于@Priority 2.要获取工厂bean对象时bean名称加前缀`&`

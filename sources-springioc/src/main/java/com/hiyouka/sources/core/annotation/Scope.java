@@ -1,4 +1,4 @@
-package com.hiyouka.sources.core.annocation;
+package com.hiyouka.sources.core.annotation;
 
 import com.hiyouka.sources.core.beans.definition.BeanDefinition;
 

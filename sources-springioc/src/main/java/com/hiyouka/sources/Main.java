@@ -1,6 +1,7 @@
 package com.hiyouka.sources;
 
 import com.hiyouka.sources.constant.LogoConstant;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,8 +24,8 @@ public class Main implements LogoConstant{
 
 	public static void main(String[] args) throws IOException {
 //        FileUtils.getFileContent("C:\\Users\\20625\\Desktop\\666.xlsx");
-//		SpringApplication.run(Main.class, args
-//		);
+		SpringApplication.run(Main.class, args
+		);
 	}
 
 }

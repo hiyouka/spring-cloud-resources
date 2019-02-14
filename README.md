@@ -1,5 +1,8 @@
-![img](http://ww1.sinaimg.cn/large/007BVBG7gy1g04w3vkdvdj304g02s0sp.jpg)
+![img](http://ww1.sinaimg.cn/large/007BVBG7gy1g04w3vkdvdj304g02s0sp.jpg)  
 
+Seed   
+├── seed-ioc   
+├── seed-mvc
 ## Directory Structure
 ```shell
 
@@ -25,7 +28,7 @@
             │   ├── config
             │   ├── constant
             │   ├── core
-            │   │   ├── annocation
+            │   │   ├── annotation
             │   │   ├── beans
             │   │   ├── context
             │   │   ├── factory
@@ -36,8 +39,6 @@
             │   ├── Main.java
             │   └── util
             └── resources
-
-
 
 ```
                  

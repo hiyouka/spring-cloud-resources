@@ -1,4 +1,4 @@
-package com.hiyouka.sources.core.annocation;
+package com.hiyouka.sources.core.annotation;
 
 
 import java.lang.annotation.*;
