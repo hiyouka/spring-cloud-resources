@@ -1,6 +1,6 @@
 ### `DefaultListableBeanFactory`的getBean方法详解：  
 &emsp;&emsp;&emsp;&emsp;这里讲的是根据类型获取bean因为它之后调用的也是根据名称获取bean，下图可以简单看出这个方法执行的步骤。首先是根据bean类型去解析bean获取nameBeanHolder，如果存在则返回bean的实例。如果没有就从父工厂中获取bean。  
-![img](http://ww1.sinaimg.cn/large/007BVBG7gy1fzplp6k1tdj30rq07imxd.jpg)
+![img](https://ws1.sinaimg.cn/large/007BVBG7gy1g06wr1adkhj30rq07imxd.jpg)
 &emsp;&emsp;&emsp;&emsp; resolveNamedBean方法：
     该方法先用`getBeanNamesForType`找出所有该类型的bean名称,大概做的步骤就是先从缓存中获取该类型的bean名称，没有获取到的
     话就使用`doGetBeanNamesForType`方法继续获取。`getBeanNamesForType`方法如下:

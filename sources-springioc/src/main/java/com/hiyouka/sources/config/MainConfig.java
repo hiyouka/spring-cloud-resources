@@ -1,7 +1,9 @@
 package com.hiyouka.sources.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author hiyouka
@@ -21,9 +23,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 //@ComponentScan({"com.hiyouka.sources.config"})
-//@PropertySource({"classpath:/datasource.properties"})
+@PropertySource({"classpath:/datasource.properties"})
 //@EnableTransactionManagement
 @ComponentScan({"com.hiyouka.sources.config","com.hiyouka.sources.util"})
 public class MainConfig {
+
+    @Value("${token.encrypt.salt}")
+    private String salt;
+
 
 }

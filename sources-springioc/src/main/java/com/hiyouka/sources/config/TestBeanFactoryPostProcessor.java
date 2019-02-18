@@ -3,6 +3,7 @@ package com.hiyouka.sources.config;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * @author hiyouka
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @since JDK 1.8
  */
 
-//@Component
+@Component
 public class TestBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
     @Override
