@@ -244,11 +244,24 @@ if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
 并将工厂对象放入缓存(由序列化id映射)。最后返回工厂bean(调用容器无参构造函数创建的`DefaultListableBeanFactory`对象);  
 
 #### prepareBeanFactory(beanFactory):
- 进行`beanFactory`的准备工作:  
-&emsp;&emsp;&emsp;&emsp; 1.给`beanFactory`添加类加载器，表达式解析器，属性编辑器注册器，`ApplicationContextAwareProcessor`。  
-&emsp;&emsp;&emsp;&emsp; 2.忽略某些类的自动注入(这些接口大多为Spring为实现类注入bean的功能接口，例如：ApplicationContextAware)。   
-&emsp;&emsp;&emsp;&emsp; 3.指定`BeanFactory`,`ResourceLoader`,`ApplicationEventPublisher`,`ApplicationContext`这些类型自动注入时的类(除`beanFactory`为当前`beanFactory`其余都为当前容器)  
-&emsp;&emsp;&emsp;&emsp; 4.为工厂注入一些环境配置信息(beanName分别为environment、systemProperties、systemEnvironment) 
+进行`beanFactory`的准备工作:
+<ol>
+    <li>
+        给`beanFactory`添加类加载器，表达式解析器，属性编辑器注册器，
+        `ApplicationContextAwareProcessor`。
+    </li>
+    <li>
+        忽略某些类的自动注入(这些接口大多为Spring为实现类注入bean的功能接口，
+        例如：ApplicationContextAware)。
+    </li>
+    <li>
+        指定`BeanFactory`,`ResourceLoader`,`ApplicationEventPublisher`,`ApplicationContext`
+        这些类型自动注入时的类(除`beanFactory`为当前`beanFactory`其余都为当前容器) 
+    </li>
+    <li>
+        为工厂注入一些环境配置信息(beanName分别为environment、systemProperties、systemEnvironment)
+    </li>
+</ol>
 
 #### postProcessBeanFactory:
 &emsp;&emsp;&emsp;&emsp;该方法时BeanFactory初始化之后再进行后续的一些BeanFactory操作。对于`AnnotationConfigApplicationContext`这是父类的一个空方法。在SpringBoot创建的另外两个web容器的时候(`AnnotationConfigServletWebServerApplicationContext`、`AnnotationConfigReactiveWebServerApplicationContext`)会重写该方法。以后可能会出个SpringBoot原理分析系列详细会讲到这两个容器的创建及准备。
