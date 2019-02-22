@@ -1,4 +1,4 @@
-package com.hiyouka.sources.config;
+package com.hiyouka.sources.config.test;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

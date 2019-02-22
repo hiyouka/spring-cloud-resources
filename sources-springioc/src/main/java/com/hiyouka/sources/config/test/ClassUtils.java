@@ -1,6 +1,6 @@
-package com.hiyouka.sources.util;
+package com.hiyouka.sources.config.test;
 
-import com.hiyouka.sources.config.TestBeanPostProcessor;
+import com.hiyouka.sources.constant.EncodeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -9,9 +9,9 @@ import org.springframework.context.ApplicationContext;
  * Date: 2019/1/27
  * @since JDK 1.8
  */
-public class ClassUtils extends SupClassU{
+public class ClassUtils extends SupClassU implements EncodeConstant{
 
-    @Autowired
+    @Autowired(required = false)
     private TestBeanPostProcessor testBeanPostProcessor;
 
     @Autowired
@@ -78,5 +78,9 @@ public class ClassUtils extends SupClassU{
             }
         }
         return cl;
+    }
+
+    public void init(){
+        System.out.println(" classUtils init method .....");
     }
 }

@@ -1,13 +1,10 @@
-package com.hiyouka.sources.config;
+package com.hiyouka.sources.config.test;
 
-import com.hiyouka.sources.util.ClassUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
-
-import javax.security.auth.login.Configuration;
 
 /**
  * @author hiyouka

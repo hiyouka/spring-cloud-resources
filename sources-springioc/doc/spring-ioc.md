@@ -245,46 +245,98 @@ if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
 
 #### prepareBeanFactory(beanFactory):
 进行`beanFactory`的准备工作:
-<ol>
-    <li>
-        给`beanFactory`添加类加载器，表达式解析器，属性编辑器注册器，
-        `ApplicationContextAwareProcessor`。
-    </li>
-    <li>
-        忽略某些类的自动注入(这些接口大多为Spring为实现类注入bean的功能接口，
-        例如：ApplicationContextAware)。
-    </li>
-    <li>
-        指定`BeanFactory`,`ResourceLoader`,`ApplicationEventPublisher`,`ApplicationContext`
-        这些类型自动注入时的类(除`beanFactory`为当前`beanFactory`其余都为当前容器) 
-    </li>
-    <li>
-        为工厂注入一些环境配置信息(beanName分别为environment、systemProperties、systemEnvironment)
-    </li>
-</ol>
+
+1. 给`beanFactory`添加类加载器，表达式解析器，属性编辑器注册器， `ApplicationContextAwareProcessor`。
+2. 忽略某些类的自动注入(这些接口大多为Spring为实现类注入bean的功能接口，例如：ApplicationContextAware)。
+3. 指定`BeanFactory`,`ResourceLoader`,`ApplicationEventPublisher`,`ApplicationContext`这些类型自动注入时的类(除`beanFactory`为当前`beanFactory`其余都为当前容器)
+4. 为工厂注入一些环境配置信息(beanName分别为environment、systemProperties、systemEnvironment)
+
 
 #### postProcessBeanFactory:
 &emsp;&emsp;&emsp;&emsp;该方法时BeanFactory初始化之后再进行后续的一些BeanFactory操作。对于`AnnotationConfigApplicationContext`这是父类的一个空方法。在SpringBoot创建的另外两个web容器的时候(`AnnotationConfigServletWebServerApplicationContext`、`AnnotationConfigReactiveWebServerApplicationContext`)会重写该方法。以后可能会出个SpringBoot原理分析系列详细会讲到这两个容器的创建及准备。
 
 #### invokeBeanFactoryPostProcessors:
 `invokeBeanFactoryPostProcessors`方法比较关键。该方法做了以下步骤：
-<ol>
-    <li>执行ConfigurationClassPostProcessor,这个处理器主要来解析配置类(分为完整配置类和精简配置类，这里只详解带`@Configuration`注解的完整配置类)。</li>
-    <li>执行其他BeanFactoryPostProcessor。(分为BeanDefinitionRegistryPostProcessor和BeanFactoryPostProcessor两种接口)</li>
-</ol>  
+1. 执行ConfigurationClassPostProcessor,这个处理器主要来解析配置类(分为完整配置类和精简配置类，这里只详解带`@Configuration`注解的完整配置类)，主要用于注册bean。
+2. 执行其他BeanFactoryPostProcessor。(分为BeanDefinitionRegistryPostProcessor和BeanFactoryPostProcessor两种接口)
 
 ##### 执行ConfigurationClassPostProcessor：  
  该方法主要执行了步骤：
- <ol>
-    <li>`ConfigurationClassParser`的parse方法
-        <ol>
-            <li>
-                获取`@PropertySource`注解信息(之后所有的获取注解信息都是分析`shouldSkip`提到的searchWithGetSemantics方法完成的)，使用processPropertySource解析添加配置文件信息。处理过程大致是先创建PropertySource(创建的时候调用loadProperties读取配置文件信息)。之后将该配置文件信息添加到beanFactory的`environment`bean对象中去。
-            </li>
-            <li>
-                获取`@ComponentScans`注解信息(若未获取到则为配置类的目录)。使用`ComponentScanAnnocationParser`来解析需要注册的bean，之后调用`ClassPathBeanDefinitionScanner`的doScan来将beanDefinition注册进容器。
-            </li>
-        </ol>
-    </li>
-    <li>`ConfigurationClassBeanDefinitionReader`的loadBeanDefinitions</li>
-</ol>
+ 
+1. `ConfigurationClassParser`的parse方法：
+    1. 获取`@PropertySource`注解信息(之后所有的获取注解信息都是分析`shouldSkip`提到的searchWithGetSemantics方法完成的)，使用processPropertySource解析添加配置文件信息。处理过程大致是先创建PropertySource(创建的时候调用loadProperties读取配置文件信息)。之后将该配置文件信息添加到beanFactory的`environment`bean对象中去。
+    2. 获取`@ComponentScans`注解信息(若未获取到则为配置类的目录)。使用`ComponentScanAnnocationParser`来解析需要注册的bean，之后调用`ClassPathBeanDefinitionScanner`的doScan来将beanDefinition注册进容器。doScan做的事情就是扫包获取指定包的所有class文件并筛选有`@Component`并且`@Conditional`匹配的class。BeanDefinition注册过程就是之前提到的registerBeanDefinition方法。之后遍历获取到的BeanDefinitions执行parse。
+    操作将注册进来的Bean里的`@PropertySource`,`@ComponentScans`等注解的信息注册进来(递归注册)。
+    3. `@Import`注解解析。processImports方法来执行该操作。将所有该注解引入的类注册到容器当中。使用collectImports方法递归查找该类下所有的注解中包含的`@Import`引入的对象。之后便是遍历处理操作：
+        1. 如果引入对象是`ImportSelector`实现类，实例化该类。如果该类实现了`Aware`接口先给该类初始化这些属性(包含`BeanClassLoaderAware`,`BeanFactoryAware`,`EnvironmentAware`,`ResourceLoaderAware`)。之后判断如果该类实现类DeferredImportSelector接口就将其放入`deferredImportSelectors`后续处理。否则获取import对象执行processImports递归。
+        2. 如果引入对象是`ImportBeanDefinitionRegistrar`实现类，和之前一样先实例化再根据`Aware`初始化。最后将实例化后的类添加到带有`@Import`类的`ConfigurationClass`的`importBeanDefinitionRegistrars`属性中以便后续操作。
+        3. 其他情况将其放入`ConfigurationClassParser`的`importStack`的`imports`缓存(用于判断该类是否需要解析)。生成该类的`ConfigurationClass`(带有`importedBy`属性)。
+    4. `@ImportResource`和第一步类似这个引入的是spring的配置类。往带有该注解的`ConfigurationClass`的`importedResources`属性添加该
+    5. `retrieveBeanMethodMetadata`，解析该类所有带有`@Bean`的方法将其添加到该类的ConfigurationClass。
+    6. `processInterfaces`，解析注入类中的所有接口中的default方法是否包含`@Bean`的，如果有就创建一个BeanMethod添加到该类的ConfigurationClass以便下一步来注册该对象。这两个方法查找了所有的`@Bean`Method。          
+    7. 添加父类class到配置类中进行注册操作，和之前的parse操作相同。
+    8. 将当前解析类的`ConfigurationClass`放入`ConfigurationClassParser`的configurationClasses属性中，为之后解析做准备。
+    9. `processDeferredImportSelectors`处理3中放入`deferredImportSelectors`缓存中的DeferredImportSelector。调用所有的selectors的selectImports方法来获取所有导入类并封装成`SourceClass`列表再去调用processImports来递归。(这么多操作实际目的就是将所有的@Import生成`ConfigurationClass`或者放入`importBeanDefinitionRegistrars`为之后loadBeanDefinitions做准备)
+2. `ConfigurationClassBeanDefinitionReader`的loadBeanDefinitions：
+    1. 遍历`ConfigurationClass`执行loadBeanDefinitionsForConfigurationClass。
+    2. 判断该`ConfigurationClass`是否是导入的(带有`importedBy`属性)，如果是将给类注册到beanFactory
+    3. 解析该`ConfigurationClass`带有`@Bean`的方法生成beanDefinition(该定义信息除了有Lazy等属性外还有factoryBeanName和factoryMethodName)并注册到容器当中。
+    4. 从importedResources属性中注册beanDefinition。读取配置文件信息获取beanDefinition并注册。
+    5. 从1.3.2中放入`importBeanDefinitionRegistrars`属性中调用ImportBeanDefinitionRegistrar的registerBeanDefinitions直接注册到容器中。
+    
+##### 执行BeanFactoryPostProcessor： 
+BeanFactoryPostProcessor排序执行：
+1. 获取BeanDefinitionRegistryPostProcessor执行处理(postProcessBeanDefinitionRegistry)。之后执行回调(postProcessBeanFactory)
+2. 获取BeanFactoryPostProcessor执行执行前置处理(postProcessBeanFactory)。之后执行后置处理(postProcessBeanFactory)
+3. 清除beanFactory缓存，清除`mergedBeanDefinitions`的未创建对象的定义信息。
+
+
+    
+#### registerBeanPostProcessors:
+添加BeanPostProcessors：
+1. 添加BeanPostProcessorChecker处理器。
+2. 获取所有的BeanPostProcessors排序并添加。 registerBeanPostProcessors过程很简单就是将该处理器对象放入beanFactory，这个过程会通过`getBean`创建处理器对象。
+3. 添加ApplicationListenerDetector处理器。
+
+执行顺序：
+1. 实现PriorityOrdered接口。
+2. 实现Ordered接口。
+3. 没有实现PriorityOrdered和Ordered接口的。
+4. 实现MergedBeanDefinitionPostProcessor接口的处理器。
+
+
+#### initMessageSource：
+国际化配置的信息。
+
+#### initApplicationEventMulticaster：
+初始化容器的事件广播器。如果容器中没有`applicationEventMulticaster`bean对象，创建一个SimpleApplicationEventMulticaster时间广播器并注册进beanFactory。
+
+#### onRefresh:
+可以重写的模板方法，以添加特定于上下文的刷新工作。对于AnnotationConfigApplicationContext这是个空方法。
+
+#### registerListeners：
+检查监听器bean并注册它们：
+1. 注册静态指定的侦听器。(添加到applicationListeners集合中)
+2. 从beanFactory获取ApplicationListener类型的beanNames并注册他们。
+3. 执行早期容器事件。
+
+#### finishBeanFactoryInitialization：
+将实例化的beanDefinition进行实例化：
+1. 如果容器中没有字符串解析器，new字符串解析器(使用容器Environment中的解析器来解析,默认是PropertySourcesPropertyResolver)。
+2. 开启允许缓存所有的beanDefinition并且将所有的beanDefinitions放入冻结配置情况的缓存中。
+3. 使用beanFactory的`preInstantiateSingletons`来实例化所有的beanDefinition。
+    1. 遍历所有beanDefinition，获取该bean组合的beanDefinition。如果该bean需要工厂创建的对象，先使用getBean获取工厂对象再getBean获取工产对象。不是工厂对象直接调用getBean。(getBean起到创建对象作用。创建对象时会调用BeanPostProcessor。详细看这篇博客)
+    2. 遍历所有的beanDefinition，getSingleton从缓存中获取之前创建的Bean。如果该bean实现了SmartInitializingSingleton接口，执行接口方法afterSingletonsInstantiated。
+    
+####  finishRefresh：
+1. 清除上下文级资源缓存（这里是资源reader对象）。
+2. 为此上下文初始化生命周期处理器。（beanName：lifecycleProcessor），如果没有获取到默认注册DefaultLifecycleProcessor。
+3. 调用生命周期处理器的onRefresh：
+    1. 获取beanFactory中所有实现Lifecycle接口的beanName，遍历，筛选出实现Lifecycle接口的必须在之前被实例化了或者实现SmartLifecycle接口。（过滤lifecycleProcessor）
+    2. 遍历1获取的所有Lifecycle中实现SmartLifecycle接口并且该类的isAutoStartup方法为true的对象。
+    3. 遍历2中获取的Lifecycle执行start方法。
+4. 添加ContextRefreshedEvent的
+5. 向LiveBeansView中注册该容器。（JMX的相关操作）
+
+### 总结：
+以上就是AnnotationConfigApplicationContext的创建过程。内容还是挺多的，还有很多细节方面可以研究。之后我会自己实现一个可以扩展的简单容器（项目名字已经起好了叫seed😁），应该还会整合这个容器和netty（还在学习中...）实现一个异步的Controller层的框架，希望大家多多关注。

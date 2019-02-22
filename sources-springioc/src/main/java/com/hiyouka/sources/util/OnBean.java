@@ -1,12 +1,11 @@
 package com.hiyouka.sources.util;
 
+import com.hiyouka.sources.config.test.ClassUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-
-import javax.annotation.Priority;
 
 /**
  * @author hiyouka

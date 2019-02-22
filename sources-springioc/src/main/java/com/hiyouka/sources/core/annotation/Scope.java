@@ -4,7 +4,7 @@ import com.hiyouka.sources.core.beans.definition.BeanDefinition;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Scope {

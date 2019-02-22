@@ -1,6 +1,9 @@
 package com.hiyouka.sources.config;
 
+import com.hiyouka.sources.constant.EncodeConstant;
+import com.hiyouka.sources.exception.SeedCoreException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,10 +29,15 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource({"classpath:/datasource.properties"})
 //@EnableTransactionManagement
 @ComponentScan({"com.hiyouka.sources.config","com.hiyouka.sources.util"})
-public class MainConfig {
+public class MainConfig implements EncodeConstant{
 
     @Value("${token.encrypt.salt}")
     private String salt;
+
+    @Bean
+    public SeedCoreException seedCoreException(){
+        return new SeedCoreException("new");
+    }
 
 
 }

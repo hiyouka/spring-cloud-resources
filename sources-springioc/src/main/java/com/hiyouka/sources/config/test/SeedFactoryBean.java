@@ -1,4 +1,4 @@
-package com.hiyouka.sources.util;
+package com.hiyouka.sources.config.test;
 
 import org.springframework.stereotype.Component;
 

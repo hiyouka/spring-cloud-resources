@@ -1,8 +1,6 @@
-package com.hiyouka.sources.util;
+package com.hiyouka.sources.config.test;
 
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Priority;
 
 /**
  * @author hiyouka
@@ -10,7 +8,7 @@ import javax.annotation.Priority;
  * @since JDK 1.8
  */
 @Component
-@Priority(2)
+//@Priority(2)
 public class TeClassU extends ClassUtils{
 
     private String old;
@@ -21,5 +19,10 @@ public class TeClassU extends ClassUtils{
 
     public void setOld(String old) {
         this.old = old;
+    }
+
+
+    public class testInternal{
+
     }
 }
