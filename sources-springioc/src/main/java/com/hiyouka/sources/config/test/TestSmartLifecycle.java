@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestSmartLifecycle implements SmartLifecycle {
 
+    public TestSmartLifecycle(){}
+
     @Override
     public boolean isAutoStartup() {
         return false;
@@ -39,5 +41,11 @@ public class TestSmartLifecycle implements SmartLifecycle {
     @Override
     public int getPhase() {
         return 0;
+    }
+
+    public class innerClass{
+        public innerClass(){
+        }
+
     }
 }

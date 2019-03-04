@@ -3,10 +3,7 @@ package com.hiyouka.sources.config;
 import com.hiyouka.sources.constant.EncodeConstant;
 import com.hiyouka.sources.exception.SeedCoreException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 /**
  * @author hiyouka
@@ -27,7 +24,9 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 //@ComponentScan({"com.hiyouka.sources.config"})
 @PropertySource({"classpath:/datasource.properties"})
-//@EnableTransactionManagement
+//@EnableTransactionManageme
+// @nt
+@Import({BeanConfig.class})
 @ComponentScan({"com.hiyouka.sources.config","com.hiyouka.sources.util"})
 public class MainConfig implements EncodeConstant{
 

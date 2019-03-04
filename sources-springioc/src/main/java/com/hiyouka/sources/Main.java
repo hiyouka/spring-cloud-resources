@@ -1,11 +1,12 @@
 package com.hiyouka.sources;
 
+import com.hiyouka.sources.config.test.ClassUtils;
 import com.hiyouka.sources.constant.LogoConstant;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 import java.io.IOException;
+import java.net.URL;
 
 
 @SpringBootApplication(exclude = {
@@ -23,8 +24,10 @@ public class Main implements LogoConstant{
 
 	public static void main(String[] args) throws IOException {
 //        FileUtils.getFileContent("C:\\Users\\20625\\Desktop\\666.xlsx");
-		SpringApplication.run(Main.class, args
-		);
+//		SpringApplication.run(Main.class, args);
+		ClassLoader defaultClassLoader = ClassUtils.getDefaultClassLoader();
+		URL resource = defaultClassLoader.getResource("com/hiyouka/sources");
+		System.out.println(resource);
 	}
 
 }
