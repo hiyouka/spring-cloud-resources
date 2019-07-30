@@ -1,6 +1,7 @@
 package com.hiyouka.sources.config.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
  * @since JDK 1.8
  */
 @Component
+@Scope("prototype")
 public class TeAuClass {
 
     @Autowired

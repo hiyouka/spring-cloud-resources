@@ -1,24 +1,23 @@
 package com.hiyouka.sources;
 
-import com.hiyouka.sources.config.MainConfig;
-import com.hiyouka.sources.config.test.ClassUtils;
-import com.hiyouka.sources.config.test.SupClassU;
-import com.hiyouka.sources.config.test.TestSmartLifecycle;
-import com.hiyouka.sources.constant.EncodeConstant;
-import com.hiyouka.sources.demo.AnnoDemo;
+import com.hiyouka.sources.config.AnnoDemo;
+import com.hiyouka.sources.demo.ConfigClass;
+import com.hiyouka.sources.demo.seedframework.comp.ImportClassToBean;
+import com.hiyouka.sources.demo.seedframework.context.BeanConfig;
+import hiyouka.seedframework.context.ApplicationContext;
+import hiyouka.seedframework.core.env.Environment;
+import hiyouka.seedframework.util.AnnotatedElementUtils;
 import org.junit.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.annotation.*;
-import org.springframework.util.StringValueResolver;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,24 +39,44 @@ public class TestMain {
     @Test
     public void test() throws ClassNotFoundException, NoSuchFieldException {
         // create ioc context
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnnotatedElementUtils bean1 = applicationContext.getBean(AnnotatedElementUtils.class);
+        System.out.println(bean1);
 
-        ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
-        String[] beanNamesForType = beanFactory.getBeanNamesForType(EncodeConstant.class);
-        String[] beanNamesForType1 = beanFactory.getBeanNamesForType(ClassUtils.class);
-        String[] beanNamesForType2 = beanFactory.getBeanNamesForType(SupClassU.class);
-        String[] testBeanPostProcessors = beanFactory.getAliases("&classUtils");
-//        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
-        ClassUtils bean = applicationContext.getBean(ClassUtils.class);
-        Field apField = bean.getClass().getDeclaredField("applicationContext");
-//        Annotation[] annotations = apField.getAnnotations();
-        applicationContext.getEnvironment().resolvePlaceholders("");
-        beanFactory.addEmbeddedValueResolver(new StringValueResolver() {
-            @Override
-            public String resolveStringValue(String strVal) {
-                return null;
-            }
-        });
+//        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfigClass.class);
+//
+//        ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
+//        beanFactory.getBean(TeProTes.class);
+//        ConfigurableEnvironment environment = applicationContext.getEnvironment();
+//        MutablePropertySources propertySources = environment.getPropertySources();
+//        Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
+//        Map<String, Object> systemProperties = environment.getSystemProperties();
+//        String property = environment.getProperty("token.encrypt.salt");
+//        environment.getProperty("");
+//        AnnoDemo bean = beanFactory.getBean(AnnoDemo.class);
+//        String test = bean.getTest();
+//        System.out.println(test);
+//        beanFactory.registerSingleton("opppp",new SeedCoreException("oppppp"));
+//        System.out.println(beanFactory.getSingletonMutex());
+//        Object supClassU = beanFactory.getBean("TeProTes");
+//        Object teAuClass = beanFactory.getBean("teAuClass");
+
+//        System.out.println(supClassU + " ================== " + teAuClass);
+//        String[] beanNamesForType = beanFactory.getBeanNamesForType(EncodeConstant.class);
+//        String[] beanNamesForType1 = beanFactory.getBeanNamesForType(ClassUtils.class);
+//        String[] beanNamesForType2 = beanFactory.getBeanNamesForType(SupClassU.class);
+//        String[] testBeanPostProcessors = beanFactory.getAliases("&classUtils");
+////        ClassUtils bean = beanFactory.getBean(ClassUtils.class);
+//        ClassUtils bean = applicationContext.getBean(ClassUtils.class);
+//        Field apField = bean.getClass().getDeclaredField("applicationContext");
+////        Annotation[] annotations = apField.getAnnotations();
+//        applicationContext.getEnvironment().resolvePlaceholders("");
+//        beanFactory.addEmbeddedValueResolver(new StringValueResolver() {
+//            @Override
+//            public String resolveStringValue(String strVal) {
+//                return null;
+//            }
+//        });
 //        System.out.println("bean Aliases is : " + Arrays.asList(testBeanPostProcessors));
 //        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 //        System.out.println("bean definition is : " + Arrays.asList(beanDefinitionNames));
@@ -91,6 +110,7 @@ public class TestMain {
 
     @Test
     public void classTest() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+
 //        TeClassU teClassU = new TeClassU();
 //        boolean assignableFrom = EncodeConstant.class.isAssignableFrom(TeClassU.class);
 //        Class<?> aClass = Class.forName("com.hiyouka.sources.config.test.TeClassU");
@@ -145,12 +165,30 @@ public class TestMain {
 //        AnnotatedBeanDefinition rootBeanDefinition = new AnnotatedGenericBeanDefinition(AnnoDemo.class);
 //        String beanName = annotationBeanNameGenerator.generateBeanName(rootBeanDefinition, null);
 //        System.out.println(beanName);
-        Class<TestSmartLifecycle.innerClass> innerClassClass = TestSmartLifecycle.innerClass.class;
-//        Constructor<TestSmartLifecycle.innerClass> declaredConstructor = innerClassClass.getDeclaredConstructor();
-        Constructor<TestSmartLifecycle.innerClass>[] declaredConstructors = (Constructor<TestSmartLifecycle.innerClass>[]) innerClassClass.getDeclaredConstructors();
-//        Object o = declaredConstructors[0].newInstance();
-        BeanUtils.instantiateClass(declaredConstructors[0],BeanUtils.instantiateClass(TestSmartLifecycle.class));
+//        Class<TestSmartLifecycle.innerClass> innerClassClass = TestSmartLifecycle.innerClass.class;
+////        Constructor<TestSmartLifecycle.innerClass> declaredConstructor = innerClassClass.getDeclaredConstructor();
+//        Constructor<TestSmartLifecycle.innerClass>[] declaredConstructors = (Constructor<TestSmartLifecycle.innerClass>[]) innerClassClass.getDeclaredConstructors();
+////        Object o = declaredConstructors[0].newInstance();
+//        BeanUtils.instantiateClass(declaredConstructors[0],BeanUtils.instantiateClass(TestSmartLifecycle.class));
 //        BeanUtils.instantiateClass()
+    }
+
+    @Test
+    public void seedTest(){
+        ApplicationContext applicationContext = new hiyouka.seedframework.context.AnnotationConfigApplicationContext(ConfigClass.class);
+        Environment bean2 = (Environment) applicationContext.getBean("environment");
+        BeanConfig bean1 = applicationContext.getBean(BeanConfig.class);
+        ImportClassToBean bean = applicationContext.getBean(ImportClassToBean.class);
+
+//        BeanDefinitionRegistry registry = new DefaultBenFactory();
+//        registry.registerBeanDefinition("config",new AnnotatedGenericBeanDefinition(com.hiyouka.sources.demo.ConfigClass.class));
+//
+//        ConfigurationClassPostProcessor postProcessor = new ConfigurationClassPostProcessor();
+//        postProcessor.postProcessBeanDefinitionRegistry(registry);
+//        if(registry instanceof hiyouka.seedframework.beans.factory.BeanFactory){
+//            AnoTest bean = ((hiyouka.seedframework.beans.factory.BeanFactory) registry).getBean(AnoTest.class);
+//            System.out.println(bean);
+//        }
     }
 
 }

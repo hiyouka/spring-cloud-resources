@@ -3,6 +3,7 @@ package com.hiyouka.sources.config.test;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  * @since JDK 1.8
  */
 @Component
+@Lazy
 public class SupClassU implements InitializingBean{
 
     @Autowired

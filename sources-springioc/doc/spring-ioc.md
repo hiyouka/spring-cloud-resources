@@ -269,18 +269,18 @@ if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
     操作将注册进来的Bean里的`@PropertySource`,`@ComponentScans`等注解的信息注册进来(递归注册)。
     3. `@Import`注解解析。processImports方法来执行该操作。将所有该注解引入的类注册到容器当中。使用collectImports方法递归查找该类下所有的注解中包含的`@Import`引入的对象。之后便是遍历处理操作：
         1. 如果引入对象是`ImportSelector`实现类，实例化该类。如果该类实现了`Aware`接口先给该类初始化这些属性(包含`BeanClassLoaderAware`,`BeanFactoryAware`,`EnvironmentAware`,`ResourceLoaderAware`)。之后判断如果该类实现类DeferredImportSelector接口就将其放入`deferredImportSelectors`后续处理。否则获取import对象执行processImports递归。
-        2. 如果引入对象是`ImportBeanDefinitionRegistrar`实现类，和之前一样先实例化再根据`Aware`初始化。最后将实例化后的类添加到带有`@Import`类的`ConfigurationClass`的`importBeanDefinitionRegistrars`属性中以便后续操作。
-        3. 其他情况将其放入`ConfigurationClassParser`的`importStack`的`imports`缓存(用于判断该类是否需要解析)。生成该类的`ConfigurationClass`(带有`importedBy`属性)。
-    4. `@ImportResource`和第一步类似这个引入的是spring的配置类。往带有该注解的`ConfigurationClass`的`importedResources`属性添加该
+        2. 如果引入对象是`ImportBeanDefinitionRegistrar`实现类，和之前一样先实例化再根据`Aware`初始化。最后将实例化后的类添加到带有`@Import`类的`com.hiyouka.source.ConfigurationBean`的`importBeanDefinitionRegistrars`属性中以便后续操作。
+        3. 其他情况将其放入`ConfigurationClassParser`的`importStack`的`imports`缓存(用于判断该类是否需要解析)。生成该类的`com.hiyouka.source.ConfigurationBean`(带有`importedBy`属性)。
+    4. `@ImportResource`和第一步类似这个引入的是spring的配置类。往带有该注解的`com.hiyouka.source.ConfigurationBean`的`importedResources`属性添加该
     5. `retrieveBeanMethodMetadata`，解析该类所有带有`@Bean`的方法将其添加到该类的ConfigurationClass。
     6. `processInterfaces`，解析注入类中的所有接口中的default方法是否包含`@Bean`的，如果有就创建一个BeanMethod添加到该类的ConfigurationClass以便下一步来注册该对象。这两个方法查找了所有的`@Bean`Method。          
     7. 添加父类class到配置类中进行注册操作，和之前的parse操作相同。
-    8. 将当前解析类的`ConfigurationClass`放入`ConfigurationClassParser`的configurationClasses属性中，为之后解析做准备。
-    9. `processDeferredImportSelectors`处理3中放入`deferredImportSelectors`缓存中的DeferredImportSelector。调用所有的selectors的selectImports方法来获取所有导入类并封装成`SourceClass`列表再去调用processImports来递归。(这么多操作实际目的就是将所有的@Import生成`ConfigurationClass`或者放入`importBeanDefinitionRegistrars`为之后loadBeanDefinitions做准备)
+    8. 将当前解析类的`com.hiyouka.source.ConfigurationBean`放入`ConfigurationClassParser`的configurationClasses属性中，为之后解析做准备。
+    9. `processDeferredImportSelectors`处理3中放入`deferredImportSelectors`缓存中的DeferredImportSelector。调用所有的selectors的selectImports方法来获取所有导入类并封装成`SourceClass`列表再去调用processImports来递归。(这么多操作实际目的就是将所有的@Import生成`com.hiyouka.source.ConfigurationBean`或者放入`importBeanDefinitionRegistrars`为之后loadBeanDefinitions做准备)
 2. `ConfigurationClassBeanDefinitionReader`的loadBeanDefinitions：
-    1. 遍历`ConfigurationClass`执行loadBeanDefinitionsForConfigurationClass。
-    2. 判断该`ConfigurationClass`是否是导入的(带有`importedBy`属性)，如果是将给类注册到beanFactory
-    3. 解析该`ConfigurationClass`带有`@Bean`的方法生成beanDefinition(该定义信息除了有Lazy等属性外还有factoryBeanName和factoryMethodName)并注册到容器当中。
+    1. 遍历`com.hiyouka.source.ConfigurationBean`执行loadBeanDefinitionsForConfigurationClass。
+    2. 判断该`com.hiyouka.source.ConfigurationBean`是否是导入的(带有`importedBy`属性)，如果是将给类注册到beanFactory
+    3. 解析该`com.hiyouka.source.ConfigurationBean`带有`@Bean`的方法生成beanDefinition(该定义信息除了有Lazy等属性外还有factoryBeanName和factoryMethodName)并注册到容器当中。
     4. 从importedResources属性中注册beanDefinition。读取配置文件信息获取beanDefinition并注册。
     5. 从1.3.2中放入`importBeanDefinitionRegistrars`属性中调用ImportBeanDefinitionRegistrar的registerBeanDefinitions直接注册到容器中。
     

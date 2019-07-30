@@ -23,7 +23,7 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 //@ComponentScan({"com.hiyouka.sources.config"})
-@PropertySource({"classpath:/datasource.properties"})
+@PropertySource({"classpath:/test/datasource.properties","classpath:/application.properties"})
 //@EnableTransactionManageme
 // @nt
 @Import({BeanConfig.class})

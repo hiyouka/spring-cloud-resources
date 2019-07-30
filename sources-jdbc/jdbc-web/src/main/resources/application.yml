@@ -1,0 +1,46 @@
+spring:
+# session type
+  session:
+    store-type: none
+  redis:
+    host: 192.168.188.129
+    port: 6379
+# server datasource
+  datasource:
+    url: jdbc:mysql://120.27.220.22:3306/ework?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: rootroot
+    driver-class-name: com.mysql.jdbc.Driver
+
+# thymeleaf config
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
+    check-template-location: true
+
+# rabbitmq config
+  rabbitmq:
+    addresses: 127.0.0.1
+    username: guest
+    password: guest
+
+
+# mybatis log config
+logging:
+  level:
+    com:
+      jy:
+        mapper: debug
+        repository: debug
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.188.129:9000/eureka/
+
+appKey: b66f1dee4c6d782e79b09381
+masterSecret: 3c04f9a1568aafda1c71222a
+job-server: HTTP://DEMO-JOB

@@ -1,0 +1,63 @@
+eureka:
+  instance:
+    hostname: localhost
+  #  等待client端心跳超时时间 默认 90s
+  #  lease-expiration-duration-in-seconds: 90000
+  #  client发送给client端的心跳频率 默认 30s
+  #  lease-renewal-interval-in-seconds: 30000
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  #  开启健康检查（依赖spring-boot-starter-actuator）
+  #  healthcheck:
+  #   enabled: true
+
+# eureka 集群模式(两个)
+#  ---
+#  spring:
+#    profiles: peer1
+#  eureka:
+#    instance:
+#      hostname: peer1
+#    client:
+#      serviceUrl:
+#        defaultZone: http://peer2/eureka/
+#
+#  ---
+#  spring:
+#    profiles: peer2
+#  eureka:
+#    instance:
+#      hostname: peer2
+#    client:
+#      serviceUrl:
+#        defaultZone: http://peer1/eureka/
+
+# 三个及以上
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://peer1/eureka/,http://peer2/eureka/,http://peer3/eureka/
+#
+#---
+#spring:
+#  profiles: peer1
+#eureka:
+#  instance:
+#    hostname: peer1
+#
+#---
+#spring:
+#  profiles: peer2
+#eureka:
+#  instance:
+#    hostname: peer2
+#
+#---
+#spring:
+#  profiles: peer3
+#eureka:
+#  instance:
+#    hostname: peer3

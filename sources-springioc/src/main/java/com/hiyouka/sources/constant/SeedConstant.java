@@ -3,7 +3,8 @@ package com.hiyouka.sources.constant;
 import com.hiyouka.sources.exception.FileSizeOutException;
 import com.hiyouka.sources.util.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * @author hiyouka

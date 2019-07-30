@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
  * Date: 2019/1/27
  * @since JDK 1.8
  */
-public class ClassUtils extends SupClassU implements EncodeConstant{
+public class ClassUtils implements EncodeConstant{
 
     @Autowired(required = false)
     private TestBeanPostProcessor testBeanPostProcessor;
