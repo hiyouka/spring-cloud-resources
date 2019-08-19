@@ -10,11 +10,28 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sources-dubbo</artifactId>
     <packaging>pom</packaging>
+
+    <properties>
+        <api-version>1.0.0-SNAPSHOT</api-version>
+    </properties>
     <modules>
         <module>dubbo-api</module>
         <module>dubbo-server</module>
         <module>dubbo-web</module>
     </modules>
 
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>com.hiyouka.sources</groupId>
+                <artifactId>dubbo-api</artifactId>
+                <version>${api-version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
 
 </project>

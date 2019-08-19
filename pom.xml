@@ -17,6 +17,8 @@
         <module>eureka-server</module>
         <module>base-pom</module>
         <module>base-jdbc-pom</module>
+        <module>sources-aop</module>
+        <module>base-aop-pom</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -80,6 +82,12 @@
             <dependency>
                 <groupId>com.hiyouka.sources</groupId>
                 <artifactId>base-jdbc-pom</artifactId>
+                <version>${base-pom-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.hiyouka.sources</groupId>
+                <artifactId>base-aop-pom</artifactId>
                 <version>${base-pom-version}</version>
             </dependency>
             <!-- base-pom end -->
