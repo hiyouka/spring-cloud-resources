@@ -3,6 +3,7 @@ import com.hiyouka.source.Main;
 import com.hiyouka.source.config.PortConfig;
 import com.hiyouka.source.model.ConfigDataEntry;
 import com.hiyouka.source.properties.WeChat;
+import com.hiyouka.source.service.ConfigEntryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,14 @@ public class TestClass {
     public void test2(){
         ExecutorService pool = Executors.newFixedThreadPool(10);
         pool.execute(new TestR());
+    }
+
+    @Autowired
+    private ConfigEntryService configEntryService;
+
+    @Test
+    public void testTransaction(){
+        configEntryService.insertAsync();
     }
 
     class TestR implements Runnable{

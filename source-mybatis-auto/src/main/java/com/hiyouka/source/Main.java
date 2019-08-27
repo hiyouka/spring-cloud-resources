@@ -1,10 +1,11 @@
 package com.hiyouka.source;
 
 import com.hiyouka.source.model.ConfigDataEntry;
-import com.jy.common.utils.ReflectUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.File;
@@ -21,6 +22,8 @@ import java.util.concurrent.*;
 //@MapperScan("com.hiyouka.source.mapper")
 @ComponentScan({"com.hiyouka.source.controller","com.hiyouka.source.service","com.hiyouka.source.config","com.hiyouka.source.properties"})
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
+@EnableAsync
 public class Main {
 
     private volatile String key;
@@ -75,7 +78,7 @@ public class Main {
         Method getId = beanA.getClass().getMethod("getId");
         Object invoke = getId.invoke(beanA);
         System.out.println("invoke value --- " + invoke);
-        ReflectUtils.copyProperties(beanA,entity);
+//        ReflectUtils.copyProperties(beanA,entity);
 //        BeanUtils.copyProperties();
         entity.forEach((k,v)->{
             System.out.println(k + "====" + v);

@@ -5,8 +5,10 @@ spring:
     username: root
     password: 123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jta:
-    enabled: true
+#    hikari:
+#      auto-commit: false
+  #  jta:
+#    enabled: true
   application:
     name: aopAuto
 
@@ -17,8 +19,9 @@ spring:
     host: 127.0.0.1
     port: 6379
 ### is use cglib proxy
-  aop:
-    proxy-target-class: false
+#  aop:
+#    auto: true
+#    proxy-target-class: false
 
 server:
   port: 8992

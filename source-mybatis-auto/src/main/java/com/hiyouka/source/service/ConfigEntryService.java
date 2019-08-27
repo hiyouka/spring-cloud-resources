@@ -3,6 +3,7 @@ package com.hiyouka.source.service;
 import com.hiyouka.source.mapper.ConfigDataEntryMapper;
 import com.hiyouka.source.model.ConfigDataEntry;
 import com.hiyouka.source.properties.WeChat;
+import com.hiyouka.source.config.transaction.ConnectionHolderOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,20 @@ public class ConfigEntryService {
     @Autowired
     private WeChat weChat;
 
-
     @Autowired
     private ConfigDataEntryMapper entryMapper;
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @ConnectionHolderOperation
+    public void insertAsync(){
+        ConfigDataEntry configDataEntry = new ConfigDataEntry();
+        configDataEntry.setName("normal insert 666");
+        configDataEntry.setNodeId("666");
+        entryMapper.insert(configDataEntry);
+        asyncService.asyncInsert();
+    }
 
     public String getConfig(String id) {
 

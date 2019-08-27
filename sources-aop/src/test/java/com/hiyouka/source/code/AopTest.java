@@ -4,7 +4,7 @@ import com.hiyouka.source.annotation.AfterAop;
 import com.hiyouka.source.annotation.BeforeAop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,19 +14,32 @@ import org.springframework.transaction.annotation.Transactional;
  * @since JDK 1.8
  */
 @Component("test_aop")
-@Transactional
 public class AopTest {
 
-    Logger logger = LoggerFactory.getLogger(AopTest.class);
+    @Autowired
+    private AsyncTest asyncTest;
+
+    private Logger logger = LoggerFactory.getLogger(AopTest.class);
 
     @BeforeAop
+    @AfterAop
+    @Transactional
+//    @ConnectionHolderOperation
     public void testBefore(){
         logger.info(Thread.currentThread().getName());
-        this.getClass().cast(AopContext.currentProxy()).innerTestBefore();
+//        asyncTest.exceptionAsync();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        Future<Object> objectFuture = asyncTest.exceptionAsync();
+//        objectFuture.get();
+//        this.getClass().cast(AopContext.currentProxy()).innerTestBefore();
 //        innerTestBefore();
     }
 
-    @AfterAop
+//    @AfterAop
     public void testExpose(){
 
     }
@@ -35,6 +48,7 @@ public class AopTest {
     @Async
     public void innerTestBefore(){
         logger.info(Thread.currentThread().getName());
+        throw new RuntimeException(Thread.currentThread().getName() + " throw a exception");
     }
 
 }
