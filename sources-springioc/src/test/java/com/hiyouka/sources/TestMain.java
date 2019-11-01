@@ -179,7 +179,6 @@ public class TestMain {
         Environment bean2 = (Environment) applicationContext.getBean("environment");
         BeanConfig bean1 = applicationContext.getBean(BeanConfig.class);
         ImportClassToBean bean = applicationContext.getBean(ImportClassToBean.class);
-
 //        BeanDefinitionRegistry registry = new DefaultBenFactory();
 //        registry.registerBeanDefinition("config",new AnnotatedGenericBeanDefinition(com.hiyouka.sources.demo.ConfigClass.class));
 //

@@ -2,9 +2,7 @@ package com.hiyouka.cache.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
@@ -12,8 +10,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @author hiyouka
  * @since JDK 1.8
  */
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class CacheConfig{
 
     @Value("#{10000}")

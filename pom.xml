@@ -19,6 +19,10 @@
         <module>base-jdbc-pom</module>
         <module>sources-aop</module>
         <module>base-aop-pom</module>
+        <module>source-jvm</module>
+        <module>source-seed</module>
+        <module>source-hessian</module>
+        <module>sources-cache</module>
     </modules>
     <packaging>pom</packaging>
 

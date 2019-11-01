@@ -13,10 +13,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 //TransactionAutoConfiguration 自动配置类已经加入了该注解
-@EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
+@EnableAspectJAutoProxy(exposeProxy = true)
 //AopAutoConfiguration 自动配置类已经加入了该注解，所以这边可以不配置 AopAutoConfiguration 除非想exposeProxy = true（）
 @EnableAsync
 public class AopApplication {
+
 
     public static void main(String[] args) {
         SpringApplication.run(AopApplication.class);

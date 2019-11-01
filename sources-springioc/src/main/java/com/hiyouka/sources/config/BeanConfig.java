@@ -25,6 +25,7 @@ public class BeanConfig {
     @Primary
 //    @Conditional(OnBean.class)
     public ClassUtils classUtils(){
+        org.springframework.util.ClassUtils
         return new ClassUtils();
     }
 

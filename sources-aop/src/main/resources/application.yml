@@ -19,9 +19,9 @@ spring:
     host: 127.0.0.1
     port: 6379
 ### is use cglib proxy
-#  aop:
-#    auto: true
-#    proxy-target-class: false
+  aop:
+    auto: true
+    proxy-target-class: false
 
 server:
   port: 8992
@@ -38,7 +38,7 @@ logging:
 #      hiyouka:
 #        source: trace
     org:
-      springframework: trace
+      springframework: info
 
 
 config:

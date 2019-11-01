@@ -1,17 +1,15 @@
 package com.hiyouka.cache;
 
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
 
 /**
  * @author hiyouka
  * @since JDK 1.8
  */
-@CacheConfig(cacheNames = "tm")
-@Component
+//@CacheConfig(cacheNames = "tm")
+//@Component
 public class CacheTest {
 
     @Cacheable(key = "#cacheName")

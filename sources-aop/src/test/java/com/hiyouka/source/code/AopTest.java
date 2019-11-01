@@ -1,19 +1,21 @@
 package com.hiyouka.source.code;
 
 import com.hiyouka.source.annotation.AfterAop;
+import com.hiyouka.source.annotation.AroundAop;
 import com.hiyouka.source.annotation.BeforeAop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author hiyouka
  * @since JDK 1.8
  */
-@Component("test_aop")
+//@Component("test_aop")
 public class AopTest {
 
     @Autowired
@@ -21,11 +23,21 @@ public class AopTest {
 
     private Logger logger = LoggerFactory.getLogger(AopTest.class);
 
+    public AopTest(AsyncTest asyncTest){
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AopTest");
+        this.asyncTest = asyncTest;
+    }
+
     @BeforeAop
     @AfterAop
-    @Transactional
+    @AroundAop
+//    @Transactional
 //    @ConnectionHolderOperation
-    public void testBefore(){
+    public Map<String,Object> testBefore(){
+        String result = "213";
+//        if(true){
+//            throw new RuntimeException("e");
+//        }
         logger.info(Thread.currentThread().getName());
 //        asyncTest.exceptionAsync();
         try {
@@ -33,6 +45,8 @@ public class AopTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return new HashMap<>();
+//        return result;
 //        Future<Object> objectFuture = asyncTest.exceptionAsync();
 //        objectFuture.get();
 //        this.getClass().cast(AopContext.currentProxy()).innerTestBefore();
@@ -50,5 +64,7 @@ public class AopTest {
         logger.info(Thread.currentThread().getName());
         throw new RuntimeException(Thread.currentThread().getName() + " throw a exception");
     }
+
+
 
 }

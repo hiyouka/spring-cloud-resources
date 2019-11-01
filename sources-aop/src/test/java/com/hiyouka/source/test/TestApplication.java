@@ -3,11 +3,11 @@ package com.hiyouka.source.test;
 import com.hiyouka.source.AopApplication;
 import com.hiyouka.source.aop.AopTest2;
 import com.hiyouka.source.code.AopTest;
+import com.hiyouka.source.code.InnerTestAopInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,14 +37,24 @@ public class TestApplication {
     @Autowired
     private BeanFactory beanFactory;
 
+    @Autowired
+    private InnerTestAopInterface innerTestAop;
+
+//    @Autowired
+//    private InnerTestAop.InnerClass innerClass;
+
+
     @Test
     public void test() throws InterruptedException {
 
-//        aopTest2.testIntercept();
+//        aopTest2.testIntercep();
 //        runTransaction();
-        Object bean = beanFactory.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
-        logger.info(">>>>>>>>>>>>>>>>>"+bean.getClass().getName());
+//        Object bean = beanFactory.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
+//        logger.info(">>>>>>>>>>>>>>>>>"+bean.getClass().getName());
         aopTest.testBefore();
+//        System.out.println(o);
+        innerTestAop.testBefore();
+        System.out.println();
 //        aopTestT.testBefore();
 //        AopTest cast = AopTest.class.cast(AopContext.currentProxy());
 //        cast.testBefore();
@@ -61,5 +71,7 @@ public class TestApplication {
         logger.info("new thread start .....");
         throw new RuntimeException(Thread.currentThread().getName() + " throw a exception");
     }
+
+
 
 }
