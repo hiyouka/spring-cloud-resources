@@ -60,8 +60,7 @@ public class AopTest{
             System.out.println("method around interceptor invoke before ........");
             Object[] args = {"123"};
             Object proceed = joinPoint.proceed();
-            System.out.println("method around interceptor invoke after ........");
-//            logger.info("before method execute : " + methodSignature.getMethod().getName());
+            System.out.println("method around//            logger.info(\"before method execute : \" + methodSignature.getMethod().getName());\n interceptor invoke after ........");
 //            proceed = "777";
             return proceed;
         }

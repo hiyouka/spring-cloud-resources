@@ -22,7 +22,7 @@ public class TestAutowired {
     @Value("#{123}")
     private String li;
 
-    @Autowired
+//    @Autowired
     private TestBean1<String,Object> testBean2;
 
     @Autowired
@@ -45,6 +45,15 @@ public class TestAutowired {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> testAutowired");
         this.testBean2 = testBean2;
         this.testFatherPrimary = testFatherPrimary;
+    }
+
+
+    public TestBean1<String, Object> getTestBean2() {
+        return testBean2;
+    }
+
+    public void setTestBean2(TestBean1<String, Object> testBean2) {
+        this.testBean2 = testBean2;
     }
 
     @AopAnnotation

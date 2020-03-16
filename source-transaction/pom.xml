@@ -17,6 +17,7 @@
         <dependency>
             <groupId>com.hiyouka.sources</groupId>
             <artifactId>base-jdbc-pom</artifactId>
+            <version>${base-pom-version}</version>
         </dependency>
 
     </dependencies>

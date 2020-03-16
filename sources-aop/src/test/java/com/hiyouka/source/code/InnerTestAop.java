@@ -4,6 +4,7 @@ import com.hiyouka.source.annotation.AfterAop;
 import com.hiyouka.source.annotation.AroundAop;
 import com.hiyouka.source.annotation.BeforeAop;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InnerTestAop implements InnerTestAopInterface{
 
+    @Qualifier("test_aop")
     @Autowired
     private AopTest aopTest;
 

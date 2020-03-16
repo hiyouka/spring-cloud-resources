@@ -14,11 +14,12 @@
     <packaging>pom</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>com.hiyouka.sources</groupId>
-            <artifactId>base-pom</artifactId>
-            <version>${base-pom-version}</version>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.hiyouka.sources</groupId>-->
+<!--            <artifactId>base-pom</artifactId>-->
+<!--            <version>${base-pom-version}</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
         <!-- aspects support -->

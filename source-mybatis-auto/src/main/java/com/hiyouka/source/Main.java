@@ -14,6 +14,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static com.hiyouka.source.Main.OperationType.*;
+
 /**
  * @author hiyouka
  * @since JDK 1.8
@@ -174,7 +176,7 @@ public class Main {
         final private OperationType type;
 
         public Entry(T entry, OperationType type) {
-            if(OperationType.POLL.equals(type)){
+            if(POLL.equals(type)){
                 entry = null;
             }
             this.entry = entry;
@@ -200,10 +202,10 @@ public class Main {
             List<T> pollEntries = new ArrayList<>();
             for(Entry<T> entry : entries){
                 OperationType type = entry.getType();
-                if(OperationType.OFFER.equals(type)){
+                if(OFFER.equals(type)){
                     queue.offer(entry.getEntry());
                     System.out.println("offer " + entry + "from queue");
-                }else if(OperationType.POLL.equals(type)){
+                }else if(POLL.equals(type)){
                     T poll = queue.poll();
                     pollEntries.add(poll);
                     System.out.println("poll " + poll + " from queue");
@@ -265,7 +267,7 @@ public class Main {
 
 
         System.out.println("线程初始化.......");
-        ExecutorService pool = Executors.newCachedThreadPool();
+        ExecutorService pool = Executors.newFixedThreadPool(10);
         ThreadPoolExecutor temp = (ThreadPoolExecutor) pool;
         System.out.println("核心线程size：" + temp.getCorePoolSize());
         System.out.println("最大线程size：" + temp.getMaximumPoolSize());

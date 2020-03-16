@@ -16,6 +16,7 @@ import seed.seedframework.context.annotation.Configuration;
 @Import(TestAutowired.class)
 public class SeedApplication {
 
+
     @Bean("testBeanOfManual")
     public TestBean1<String,Object> stringObjectTestBean1(){
         return new TestBean1<>();

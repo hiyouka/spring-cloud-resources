@@ -1,0 +1,78 @@
+plugins {
+    id "io.spring.dependency-management" version "1.0.7.RELEASE" apply false
+//    id 'groovy'
+}
+
+//apply plugin: 'java'
+
+group = 'com.hiyouka.source'
+
+repositories {
+    mavenLocal() // 本地仓库
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"} //阿里云镜像仓库
+    mavenCentral()  //maven中央仓库
+    jcenter()       // Center中央仓库
+    // spring仓库
+    maven { url "https://repo.spring.io/libs-release" }
+}
+
+//sourceCompatibility = 1.8
+
+ext{
+    reactorVersion = 'Dysprosium-SR2'
+    nettyVersion   = '4.1.43.Final'
+}
+
+
+//
+//dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+//}
+
+// 配置所用项目
+//configure(allprojects){
+////    apply plugin: 'idea'
+////    apply plugin: 'java'
+//    apply plugin: "io.spring.dependency-management"
+//}
+//
+//configure(rootProject){
+//    dependencyManagement {
+//        imports {
+//            mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
+//
+//        }
+//    }
+//}
+
+
+// 配置jar发布地址
+//uploadArchives {
+//    repositories {
+//        flatDir {
+//            dirs 'repos'
+//        }
+//    }
+//}
+
+// gradle 分为三个阶段 初始化(initialization) 配置(configuration) 运行(execution)
+// setting.gradle 配置文件对属性进行配置(初始化)
+// build.gradle 对对象，表达式进行配置
+
+// 定义空的方法，之后为方法添加操作 类似js方法的定义
+task myCopy()
+Task myCopy = tasks.getByName('myCopy')
+myCopy.doLast {
+    println 'do last in execution phase'
+}
+
+// 类似java方法定义
+task innerCopy {
+    doFirst {
+        println 'do first in configure phase'
+    }
+
+}
+
+//
+

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: web-flux-demo
+server:
+  port: 8888
+
+logging:
+  level:
+    root: info
+  base:
+      path: /logs

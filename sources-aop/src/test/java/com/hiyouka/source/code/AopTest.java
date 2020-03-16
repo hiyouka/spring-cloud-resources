@@ -5,8 +5,8 @@ import com.hiyouka.source.annotation.AroundAop;
 import com.hiyouka.source.annotation.BeforeAop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +15,10 @@ import java.util.Map;
  * @author hiyouka
  * @since JDK 1.8
  */
-//@Component("test_aop")
+@Component("test_aop")
 public class AopTest {
 
-    @Autowired
+//    @Autowired
     private AsyncTest asyncTest;
 
     private Logger logger = LoggerFactory.getLogger(AopTest.class);
@@ -26,6 +26,10 @@ public class AopTest {
     public AopTest(AsyncTest asyncTest){
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AopTest");
         this.asyncTest = asyncTest;
+    }
+
+    public AsyncTest getAsyncTest() {
+        return asyncTest;
     }
 
     @BeforeAop
