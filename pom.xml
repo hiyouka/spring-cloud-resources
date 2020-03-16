@@ -16,7 +16,7 @@
         <spring-cloud-version>Greenwich.RELEASE</spring-cloud-version>
         <mybatis-starter-version>2.1.0</mybatis-starter-version>
         <alibaba-druid-version>1.1.10</alibaba-druid-version>
-        <alibaba-fastjson-version>1.2.3</alibaba-fastjson-version>
+        <alibaba-fastjson-version>1.2.25</alibaba-fastjson-version>
         <base-pom-version>1.0.0-SNAPSHOT</base-pom-version>
         <reactor-bom.version>Dysprosium-SR2</reactor-bom.version>
         <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
